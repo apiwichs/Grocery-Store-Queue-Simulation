@@ -129,7 +129,7 @@ Customer wait time is defined as:
 This project was developed for **ECE 244 – Programming Fundamentals**.
 
 Academic Integrity Notice:
-This repository is shared for learning and demonstration purposes only.
+This repository is shared for demonstration purposes only.
 Students currently enrolled in ECE 244 or similar courses should not copy
 or submit this code for academic credit.
 
@@ -137,6 +137,6 @@ or submit this code for academic credit.
 
 ## 7. Author
 
-Apiwich "Ohm" Sumeksri  
+Apiwich Sumeksri  
 Electrical & Computer Engineering  
 University of Toronto
