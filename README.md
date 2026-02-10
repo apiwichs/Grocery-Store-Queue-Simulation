@@ -1,4 +1,9 @@
 # 🛒 Grocery Store Queue Simulation (C++)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![Architecture](https://img.shields.io/badge/Computer%20Architecture-Pipeline%20Simulation-green)
+![Status](https://img.shields.io/badge/Status-Complete-success)
+
+A **cycle-accurate 5-stage CPU pipeline simulator** that models **instruction-level parallelism**, **RAW data hazards**, and **stall/bubble behavior**, with **quantitative performance analysis** using **NumPy**, **Pandas**, and **Matplotlib**.
 
 ---
 
