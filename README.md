@@ -36,6 +36,9 @@ The simulator advances a global clock, processes events in chronological order, 
 - Ties are broken by register creation order
 - Customers never switch queues once assigned
 
+### 🔹 Sample Simulation Mode
+![](images/groceries_sim_overview.png)
+
 ---
 
 ## ⏱️ Simulation Time Model
