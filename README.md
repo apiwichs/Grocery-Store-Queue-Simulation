@@ -1,147 +1,136 @@
-# 🛒 Grocery Store Queue Simulation (C++)
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
-![Architecture](https://img.shields.io/badge/Computer%20Architecture-Pipeline%20Simulation-green)
-![Status](https://img.shields.io/badge/Status-Complete-success)
+# 🛒 Grocery Store Queue Simulation
 
-A **cycle-accurate 5-stage CPU pipeline simulator** that models **instruction-level parallelism**, **RAW data hazards**, and **stall/bubble behavior**, with **quantitative performance analysis** using **NumPy**, **Pandas**, and **Matplotlib**.
+![C++](https://img.shields.io/badge/C%2B%2B-17-blue)
+![Data Structures](https://img.shields.io/badge/Data%20Structures-Queues%20%26%20Heaps-orange)
+![Discrete Simulation](https://img.shields.io/badge/Simulation-Discrete--Event-green)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
 
----
+A **time-driven discrete-event simulation** of a grocery store checkout system, modeling customer arrivals, service times, and dynamic register management using efficient C++ data structures.
 
-## 1. Project Overview
-
-This project implements a time-based simulation of a grocery store checkout
-system. Customers arrive over simulated time and are served by checkout
-registers that can open and close dynamically.
-
-The simulation processes user commands sequentially, advancing a global
-simulation clock and updating customer and register states accordingly.
+The simulator advances a global clock, processes events in chronological order, and supports both **single-queue** and **multi-queue** checkout policies with full statistical analysis of customer wait times.
 
 ---
 
-## 2. Queueing Modes
+## 🚀 Highlights
 
-The simulation operates in one of two modes, selected at startup.
-
-### Single Queue Mode
-- All customers wait in one shared virtual queue.
-- When a register becomes available, it immediately serves the next
-  waiting customer.
-- If multiple registers are free, the register closest to the head of the
-  register list is selected.
-
-### Multiple Queue Mode
-- Each register maintains its own queue.
-- Upon arrival, a customer joins the register whose queue has the fewest
-  total items.
-- If multiple registers tie, the one closest to the head of the register
-  list is selected.
-- Customers do not switch queues once assigned.
+- ⏱️ Time-accurate discrete-event simulation  
+- 🧾 Dynamic register open/close handling  
+- 🧍 Single-queue and multi-queue checkout models  
+- 📊 Max / average / standard deviation wait-time analysis  
+- ⚙️ Command-driven simulation via standard input  
+- 🧠 Priority-based event processing  
+- ♻️ Safe dynamic memory management  
 
 ---
 
-## 3. Simulation Time Model
+## 🧠 Simulation Modes
 
-- The simulation maintains a global clock starting at time 0.
-- Each command includes a `timeElapsed` parameter.
+### 🔹 Single Queue Mode
+- All customers wait in one shared queue
+- Any available register immediately serves the next customer
+- Tie-breaking is based on register creation order
+
+### 🔹 Multiple Queue Mode
+- Each register maintains its own queue
+- Incoming customers join the register with the **fewest total items**
+- Ties are broken by register creation order
+- Customers never switch queues once assigned
+
+---
+
+## ⏱️ Simulation Time Model
+
+- A **global simulation clock** starts at time `0`
+- Every command includes a `timeElapsed` value
 - Before executing a command:
-  - The simulation clock is advanced by `timeElapsed`.
-  - All customer departures that occur within this time window are processed.
-- Customer departures are processed in order of earliest departure time,
-  regardless of register position in the list.
+  - The clock advances by `timeElapsed`
+  - All customer departures within that interval are processed
+- Departures are handled strictly by **earliest departure time**, independent of register order
 
 ---
 
-## 4. Input Commands
+## 📥 Input Commands
 
-All input is provided through standard input using the formats below.
-Each command advances the simulation clock by the specified `timeElapsed`.
+All commands are read from **standard input** and processed sequentially.
 
----
+### Open a Register
+```
+register open <ID> <secPerItem> <setupTime> <timeElapsed>
+```
 
-### 4.1 Open a Register
-
-**Command**  
-`register open <ID> <secPerItem> <setupTime> <timeElapsed>`
-
-**Description**
-- Opens a new checkout register.
-- `ID` must be unique.
-- `secPerItem` specifies processing time per item.
-- `setupTime` is the fixed overhead per customer.
-- Simulation time is advanced before the register is opened.
-- In single queue mode:
-  - If customers are waiting, the new register immediately serves
-    the next customer.
-- If the register ID already exists, an error is reported.
+- Opens a new checkout register
+- Register IDs must be unique
+- Advances simulation time before opening
+- In single-queue mode, idle customers are immediately served
 
 ---
 
-### 4.2 Close a Register
+### Close a Register
+```
+register close <ID> <timeElapsed>
+```
 
-**Command**  
-`register close <ID> <timeElapsed>`
-
-**Description**
-- Closes an existing checkout register.
-- Simulation time is advanced before closing.
-- All customer departures that occur before the close are processed.
-- If the register exists:
-  - It is removed from the system and its memory is freed.
-- If the register does not exist, an error is reported.
-- Registers are guaranteed to be idle when closed.
+- Advances simulation time before closing
+- All departures before close are processed
+- Registers are guaranteed to be idle when closed
 
 ---
 
-### 4.3 Add a Customer
+### Add a Customer
+```
+customer <items> <timeElapsed>
+```
 
-**Command**  
-`customer <items> <timeElapsed>`
-
-**Description**
-- Adds a new customer to the simulation.
-- `items` specifies the number of items the customer has.
-- Simulation time is advanced before the customer arrives.
-- In single queue mode:
-  - The customer joins a free register if available;
-    otherwise, the shared queue.
-- In multiple queue mode:
-  - The customer joins the register with the fewest total items.
-  - If no registers are open, the customer is discarded.
+- Adds a customer with a specified item count
+- Time advances before arrival
+- Queue selection depends on simulation mode
+- In multi-queue mode, customers are discarded if no registers are open
 
 ---
 
-## 5. Simulation Output
+## 📤 Program Output
 
 ### Runtime Output
-The program reports:
+The simulation reports:
 - Customer arrivals
-- Customer departures (including register ID and departure time)
-- Register opening and closing events
+- Customer departures (with register ID and departure time)
+- Register open/close events
 
 ### End-of-Simulation Statistics
-After end-of-file input, the program reports:
-1. Maximum customer wait time
-2. Average customer wait time
-3. Standard deviation of customer wait time
+After EOF, the program prints:
+1. **Maximum customer wait time**
+2. **Average customer wait time**
+3. **Standard deviation of customer wait time**
 
-Customer wait time is defined as:  
+**Wait Time Definition:**  
 `departure time − arrival time`
 
 ---
 
-## 6. Academic Context
+## 🏗️ Implementation Details
 
-This project was developed for **ECE 244 – Programming Fundamentals**.
-
-Academic Integrity Notice:
-This repository is shared for demonstration purposes only.
-Students currently enrolled in ECE 244 or similar courses should not copy
-or submit this code for academic credit.
+- Implemented in **C++ (STL-based)**
+- Uses:
+  - Queues for customer management
+  - Ordered structures for event timing
+  - Dynamic memory allocation with proper cleanup
+- Designed to scale cleanly with increasing customers and registers
 
 ---
 
-## 7. Author
+## 🎓 Academic Context
 
-Apiwich Sumeksri  
+Developed for **ECE 244 – Programming Fundamentals**  
+University of Toronto
+
+**Academic Integrity Notice**  
+This repository is provided for **demonstration and portfolio purposes only**.  
+Students currently enrolled in ECE 244 or similar courses should **not copy or submit** this code for academic credit.
+
+---
+
+## 👤 Author
+
+**Apiwich Sumeksri**  
 Electrical & Computer Engineering  
 University of Toronto
