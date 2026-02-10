@@ -1,6 +1,6 @@
 # 🛒 Grocery Store Queue Simulation
 
-![C++](https://img.shields.io/badge/C%2B%2B-17-blue)
+![C++](https://img.shields.io/badge/C%2B%2B-blue)
 ![Data Structures](https://img.shields.io/badge/Data%20Structures-Queues%20%26%20Heaps-orange)
 ![Discrete Simulation](https://img.shields.io/badge/Simulation-Discrete--Event-green)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
