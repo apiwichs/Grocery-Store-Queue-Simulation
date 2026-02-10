@@ -37,7 +37,7 @@ The simulator advances a global clock, processes events in chronological order, 
 - Customers never switch queues once assigned
 
 ### 🔹 Sample Simulation Mode
-![](images/groceries_sim_overview.png)
+![Example Simulation Overview](images/groceries_sim_overview.png)
 
 ---
 
